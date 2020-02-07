@@ -1,10 +1,11 @@
 ##Load data set 
-data <- read.table("household_power_consumption.txt",header=TRUE, sep=";")
+data <- read.table("household_power_consumption.txt",header=TRUE, sep=";",stringAsFactors=FALSE)
 sub <- subset(data,Date=="1/2/2007" | Date=="2/2/2007" )
-sub$Global_active_power <- as.numeric(sub$Global_active_power)
+sub[,3:9] <- lapply(sub[,3:9], function(x) as.numeric(as.character(x)))
 sub$Date <-as.Date(sub$Date,"%d/%m/%Y")
 dt<- paste(sub$Date,sub$Time)
 sub$Time <- strptime(dt,"%Y-%m-%d %H:%M:%S")
+
 
 ## Plot 3
 dev.copy(png,"plot3.png", width = 480, height = 480)
